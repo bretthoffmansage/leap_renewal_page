@@ -1,0 +1,6 @@
+{
+  "applicationDisplayName": "leap_renewal_page",
+  "applicationFolderName": "leap_renewal_page",
+  "createdAt": "2026-07-15T17:51:01.013Z",
+  "note": "Used only for the optional final ForgeShell packaging step. Nothing is renamed during bootstrap."
+}

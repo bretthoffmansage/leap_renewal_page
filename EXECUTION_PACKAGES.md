@@ -296,7 +296,7 @@ This group builds the visible renewal finder on top of the API and typed modules
 
 ## WP-3.1 — Implement accessible single-page renewal finder UI
 
-**Status:** ready  
+**Status:** complete  
 **Priority:** critical  
 **Depends on:** WP-2.1  
 **Blocks:** WP-4.1  

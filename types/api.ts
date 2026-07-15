@@ -27,7 +27,6 @@ export type LookupSuccessResponse = {
   ok: true;
   inputEmail: string;
   account: PublicAccountSummary;
-  routing: RoutingDecision;
   warnings?: string[];
 };
 
@@ -39,3 +38,10 @@ export type LookupErrorResponse = {
 };
 
 export type RenewalLookupResponse = LookupSuccessResponse | LookupErrorResponse;
+
+export type RenewalDestinationSuccessResponse = {
+  ok: true;
+  routing: RoutingDecision;
+};
+
+export type RenewalDestinationResponse = RenewalDestinationSuccessResponse | LookupErrorResponse;

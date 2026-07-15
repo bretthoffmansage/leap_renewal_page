@@ -194,7 +194,7 @@ This group creates the sensitive server-only API and integration layer.
 
 ## WP-2.1 — Implement server-side Keap lookup API
 
-**Status:** ready  
+**Status:** complete  
 **Priority:** critical  
 **Depends on:** WP-1.2  
 **Blocks:** WP-3.1, WP-4.1  

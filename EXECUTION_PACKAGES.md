@@ -104,7 +104,7 @@ This group builds pure, testable modules before networked Keap work or UI state 
 
 ## WP-1.2 — Add typed renewal, validation, API, and sanitizer modules
 
-**Status:** ready  
+**Status:** complete  
 **Priority:** critical  
 **Depends on:** WP-1.1  
 **Blocks:** WP-2.1, WP-3.1  

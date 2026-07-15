@@ -643,3 +643,7 @@ Before public launch, use safe Keap credentials and confirm:
 ## Deferred Version 1 decisions
 
 Final cohort routing, email ownership verification, Convex/database persistence, admin override tooling, analytics, durable confirmation/click logs, and automatic duplicate-contact resolution are intentionally deferred from Version 1.
+
+## Launch checklist
+
+For external setup and public-launch verification, see `OPERATOR_LAUNCH_CHECKLIST.md`.

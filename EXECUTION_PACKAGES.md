@@ -18,7 +18,7 @@ This group creates the buildable Next.js application baseline needed before prod
 
 ## WP-1.1 — Scaffold Next.js App Router foundation
 
-**Status:** ready  
+**Status:** complete  
 **Priority:** critical  
 **Depends on:** none  
 **Blocks:** WP-1.2, WP-2.1, WP-3.1, WP-4.1  

@@ -583,3 +583,63 @@ to:
 - final clean state
 
 with minimal manual rescue.
+
+---
+
+# LEAP Membership Renewal Finder application notes
+
+This ForgeShell workspace now contains a Next.js implementation of the LEAP Membership Renewal Finder described in `PRD_SOURCE.md`.
+
+## Local development
+
+```bash
+npm install
+npm run dev
+```
+
+Useful validation commands:
+
+```bash
+npm run test
+npm run build
+npm run lint
+npm run typecheck
+npm audit --omit=dev
+```
+
+## Required environment variables
+
+Copy `.env.example` to `.env.local` for local development and set the real values outside Git.
+
+- `KEAP_ACCESS_TOKEN` — required server-only Keap / Infusionsoft REST API token. Do not use a `NEXT_PUBLIC_` prefix.
+- `KEAP_BASE_URL` — optional; defaults to `https://api.infusionsoft.com/crm/rest/v2`.
+- `KEAP_REQUEST_TIMEOUT_MS` — optional request timeout; defaults to `12000`.
+- `KEAP_ACTIVE_LEAPER_TAG_ID` — optional active LEAP tag reference; default PRD value is `3097`.
+- `ENABLE_RAW_KEAP_DEBUG` — optional; defaults to `false` and is ignored in production code paths.
+
+## Vercel setup notes
+
+Configure Production, Preview, and Development environment variables separately in Vercel. Changes to Vercel environment variables apply to new deployments. Preview deployments that connect to production Keap data should be access-restricted by the operator before public sharing.
+
+## Operator smoke-test checklist
+
+Before public launch, use safe Keap credentials and confirm:
+
+1. `/tags/3097` works with the configured token.
+2. A known LEAP member email returns the expected contact.
+3. Full contact retrieval returns tag IDs and custom fields.
+4. Tag catalog pagination works.
+5. Contact model metadata is available or fails safely.
+6. Notes retrieval is best-effort and does not fail the lookup when unavailable.
+7. Active LEAP tag detection works for known contacts.
+8. `LEAPCohort` is discoverable for known members.
+9. The browser never receives `KEAP_ACCESS_TOKEN`.
+10. Refresh, Deny, and Reset return to the initial blank email state.
+11. Confirm assigns Cohort 1.
+12. The renewal button points exactly to `https://leap.sagehub.com/cohort-1-renewal-2026`.
+13. Arbitrary redirect URLs cannot be injected.
+14. Production mode hides raw Keap portfolio data.
+
+## Deferred Version 1 decisions
+
+Final cohort routing, email ownership verification, Convex/database persistence, admin override tooling, analytics, durable confirmation/click logs, and automatic duplicate-contact resolution are intentionally deferred from Version 1.

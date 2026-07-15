@@ -53,28 +53,41 @@ function mapErrorToStatus(error: KeapRequestError): number {
   return 502;
 }
 
+function logLookupResult(requestId: string, result: string, startedAt: number) {
+  console.info("renewal_lookup", {
+    requestId,
+    result,
+    durationMs: Date.now() - startedAt,
+  });
+}
+
 export async function POST(request: NextRequest) {
   const requestId = crypto.randomUUID();
+  const startedAt = Date.now();
   let body: unknown;
 
   try {
     body = await request.json();
   } catch {
+    logLookupResult(requestId, "invalid_json", startedAt);
     return errorResponse("INVALID_REQUEST", 400, requestId);
   }
 
   const record = body && typeof body === "object" ? (body as Record<string, unknown>) : undefined;
   if (!record || Object.keys(record).some((key) => key !== "email")) {
+    logLookupResult(requestId, "invalid_request", startedAt);
     return errorResponse("INVALID_REQUEST", 400, requestId);
   }
 
   const emailResult = validateEmailInput(record.email);
   if (!emailResult.ok) {
+    logLookupResult(requestId, "invalid_email", startedAt);
     return errorResponse("INVALID_EMAIL", 400, requestId);
   }
 
   const rateLimit = checkLookupRateLimit({ ip: getClientIp(request), email: emailResult.email });
   if (!rateLimit.allowed) {
+    logLookupResult(requestId, "rate_limited", startedAt);
     return errorResponse("RATE_LIMITED", 429, requestId);
   }
 
@@ -84,13 +97,16 @@ export async function POST(request: NextRequest) {
     const result = await lookupAndNormalizeKeapAccount({ email: emailResult.email, config, includeRaw });
 
     if ("status" in result && result.status === "not_found") {
+      logLookupResult(requestId, "not_found", startedAt);
       return errorResponse("CONTACT_NOT_FOUND", 404, requestId);
     }
 
     if ("status" in result && result.status === "duplicate") {
+      logLookupResult(requestId, "duplicate", startedAt);
       return errorResponse("MULTIPLE_CONTACTS_FOUND", 409, requestId);
     }
 
+    logLookupResult(requestId, "success", startedAt);
     return jsonResponse(
       {
         ok: true,
@@ -102,9 +118,11 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     if (error instanceof KeapRequestError) {
+      logLookupResult(requestId, error.code, startedAt);
       return errorResponse(error.code, mapErrorToStatus(error), requestId);
     }
 
+    logLookupResult(requestId, "internal_error", startedAt);
     return errorResponse("INTERNAL_ERROR", 500, requestId);
   }
 }

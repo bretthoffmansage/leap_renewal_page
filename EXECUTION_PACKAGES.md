@@ -390,7 +390,7 @@ This group hardens the completed Version 1 flow before audit and closeout.
 
 ## WP-4.1 — Add production safety hardening, docs, and test coverage
 
-**Status:** ready  
+**Status:** complete  
 **Priority:** high  
 **Depends on:** WP-3.1  
 **Blocks:** final audit and hardening phases  

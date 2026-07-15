@@ -25,5 +25,8 @@
     "eslint-config-next": "latest",
     "typescript": "latest",
     "vitest": "^4.1.10"
+  },
+  "overrides": {
+    "postcss": "8.5.19"
   }
 }

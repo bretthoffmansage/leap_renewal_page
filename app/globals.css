@@ -1,16 +1,17 @@
 :root {
   color-scheme: light;
-  --background: #f5f1e8;
-  --foreground: #1e2a24;
-  --muted: #5f6f66;
+  --background: #f4efe5;
+  --foreground: #1d2a24;
+  --muted: #66746c;
   --card: #fffdf8;
-  --border: #dfd5c6;
+  --card-strong: #ffffff;
+  --border: #ded2bf;
   --accent: #285c4d;
-  --accent-strong: #163d34;
+  --accent-strong: #133d33;
   --accent-soft: #dcebe4;
+  --gold: #b88a43;
   --danger: #9f2f24;
-  --danger-soft: #f8e3df;
-  --shadow: rgba(31, 41, 35, 0.13);
+  --shadow: rgba(31, 41, 35, 0.14);
 }
 
 * {
@@ -27,8 +28,9 @@ body {
   margin: 0;
   color: var(--foreground);
   background:
-    radial-gradient(circle at top left, rgba(40, 92, 77, 0.16), transparent 32rem),
-    radial-gradient(circle at bottom right, rgba(220, 235, 228, 0.7), transparent 28rem),
+    linear-gradient(135deg, rgba(255, 253, 248, 0.72), rgba(244, 239, 229, 0.2)),
+    radial-gradient(circle at 14% 8%, rgba(40, 92, 77, 0.18), transparent 28rem),
+    radial-gradient(circle at 86% 88%, rgba(184, 138, 67, 0.16), transparent 24rem),
     var(--background);
   font-family:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -47,34 +49,79 @@ a {
   display: grid;
   min-height: 100vh;
   place-items: center;
-  padding: clamp(1rem, 3vw, 2.5rem);
+  padding: clamp(1rem, 3vw, 2.75rem);
 }
 
 .renewal-card {
-  width: min(100%, 42rem);
-  padding: clamp(1.5rem, 4vw, 3rem);
-  border: 1px solid var(--border);
-  border-radius: 28px;
-  background: color-mix(in srgb, var(--card) 94%, white);
-  box-shadow: 0 24px 80px var(--shadow);
+  position: relative;
+  width: min(100%, 43rem);
+  overflow: hidden;
+  padding: clamp(1.35rem, 4vw, 3rem);
+  border: 1px solid rgba(222, 210, 191, 0.92);
+  border-radius: 32px;
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(255, 253, 248, 0.98)),
+    var(--card);
+  box-shadow:
+    0 28px 90px var(--shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.82);
+}
+
+.renewal-card::before {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 7px;
+  background: linear-gradient(90deg, var(--accent), var(--gold));
+  content: "";
+}
+
+.brand-strip {
+  display: flex;
+  gap: 0.85rem;
+  align-items: center;
+  margin-bottom: 1.35rem;
+}
+
+.brand-mark {
+  display: inline-grid;
+  width: 2.75rem;
+  height: 2.75rem;
+  place-items: center;
+  border: 1px solid rgba(40, 92, 77, 0.22);
+  border-radius: 15px;
+  background: var(--accent-soft);
+  color: var(--accent-strong);
+  font-weight: 950;
+  letter-spacing: -0.06em;
+}
+
+.eyebrow,
+.brand-subtitle {
+  margin: 0;
 }
 
 .eyebrow {
-  margin: 0 0 0.75rem;
   color: var(--accent);
-  font-size: 0.83rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.14em;
   text-transform: uppercase;
+}
+
+.brand-subtitle {
+  margin-top: 0.18rem;
+  color: var(--muted);
+  font-size: 0.92rem;
+  font-weight: 650;
 }
 
 h1 {
   max-width: 12ch;
   margin: 0;
   color: var(--accent-strong);
-  font-size: clamp(2.25rem, 7vw, 4.2rem);
-  line-height: 0.96;
-  letter-spacing: -0.06em;
+  font-size: clamp(2.35rem, 7vw, 4.45rem);
+  line-height: 0.95;
+  letter-spacing: -0.065em;
 }
 
 .intro {
@@ -83,6 +130,18 @@ h1 {
   color: var(--muted);
   font-size: clamp(1rem, 2vw, 1.14rem);
   line-height: 1.65;
+}
+
+.assurance-note {
+  display: inline-flex;
+  margin: 1rem 0 0;
+  border: 1px solid rgba(40, 92, 77, 0.16);
+  border-radius: 999px;
+  background: rgba(220, 235, 228, 0.48);
+  color: var(--accent-strong);
+  padding: 0.5rem 0.75rem;
+  font-size: 0.92rem;
+  font-weight: 750;
 }
 
 .lookup-form,
@@ -97,18 +156,19 @@ h1 {
 
 .lookup-form label {
   color: var(--accent-strong);
-  font-weight: 800;
+  font-weight: 850;
 }
 
 .lookup-form input {
   width: 100%;
-  min-height: 3.5rem;
+  min-height: 3.65rem;
   border: 1px solid var(--border);
-  border-radius: 16px;
-  background: #fff;
+  border-radius: 18px;
+  background: var(--card-strong);
   color: var(--foreground);
-  padding: 0.85rem 1rem;
-  font-size: 1.05rem;
+  padding: 0.9rem 1rem;
+  font-size: 1.06rem;
+  box-shadow: inset 0 1px 0 rgba(19, 61, 51, 0.04);
 }
 
 .lookup-form input:invalid {
@@ -140,15 +200,16 @@ h1 {
   justify-content: center;
   border: 1px solid transparent;
   border-radius: 999px;
-  padding: 0.8rem 1.15rem;
+  padding: 0.82rem 1.18rem;
   cursor: pointer;
-  font-weight: 850;
+  font-weight: 875;
   text-align: center;
   text-decoration: none;
   transition:
     transform 160ms ease,
     box-shadow 160ms ease,
-    background-color 160ms ease;
+    background-color 160ms ease,
+    border-color 160ms ease;
 }
 
 .button:hover {
@@ -162,15 +223,20 @@ h1 {
 }
 
 .button--primary {
-  background: var(--accent);
+  background: linear-gradient(180deg, #2f6b5a, var(--accent));
   color: #fff;
-  box-shadow: 0 12px 28px rgba(40, 92, 77, 0.22);
+  box-shadow: 0 14px 30px rgba(40, 92, 77, 0.24);
 }
 
 .button--secondary {
-  border-color: var(--border);
-  background: #fff;
+  border-color: rgba(40, 92, 77, 0.16);
+  background: rgba(255, 255, 255, 0.72);
   color: var(--accent-strong);
+}
+
+.button--secondary:hover {
+  border-color: rgba(40, 92, 77, 0.3);
+  background: #fff;
 }
 
 .account-summary {
@@ -178,9 +244,10 @@ h1 {
   gap: 0.75rem;
   margin: 1.5rem 0 0;
   padding: 1rem;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  background: rgba(220, 235, 228, 0.32);
+  border: 1px solid rgba(40, 92, 77, 0.14);
+  border-radius: 22px;
+  background:
+    linear-gradient(180deg, rgba(220, 235, 228, 0.48), rgba(255, 255, 255, 0.7));
 }
 
 .detail-row {
@@ -188,26 +255,32 @@ h1 {
   grid-template-columns: minmax(7rem, 0.45fr) 1fr;
   gap: 1rem;
   align-items: baseline;
+  padding: 0.15rem 0;
+}
+
+.detail-row + .detail-row {
+  border-top: 1px solid rgba(40, 92, 77, 0.1);
+  padding-top: 0.85rem;
 }
 
 .detail-row dt {
   color: var(--muted);
-  font-size: 0.83rem;
-  font-weight: 800;
-  letter-spacing: 0.06em;
+  font-size: 0.78rem;
+  font-weight: 875;
+  letter-spacing: 0.07em;
   text-transform: uppercase;
 }
 
 .detail-row dd {
   margin: 0;
   color: var(--foreground);
-  font-weight: 750;
+  font-weight: 780;
 }
 
 .cohort-note {
   margin: 1rem 0 0;
   color: var(--accent-strong);
-  font-weight: 800;
+  font-weight: 850;
 }
 
 .loader {
@@ -233,7 +306,11 @@ h1 {
 
 @media (max-width: 560px) {
   .renewal-card {
-    border-radius: 22px;
+    border-radius: 24px;
+  }
+
+  .brand-strip {
+    align-items: flex-start;
   }
 
   .button-row,

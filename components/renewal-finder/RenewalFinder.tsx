@@ -158,12 +158,19 @@ export function RenewalFinder() {
 
   return (
     <section className="renewal-card" aria-labelledby="renewal-heading">
-      <p className="eyebrow">LEAP / Sage</p>
+      <div className="brand-strip" aria-label="LEAP and Sage renewal finder">
+        <span className="brand-mark" aria-hidden="true">S</span>
+        <div>
+          <p className="eyebrow">LEAP / Sage</p>
+          <p className="brand-subtitle">Membership renewal support</p>
+        </div>
+      </div>
 
       {state.status === "email-entry" ? (
         <>
           <h1 id="renewal-heading">Find Your LEAP Renewal Page</h1>
           <p className="intro">Enter the email address connected to your LEAP membership.</p>
+          <p className="assurance-note">Your lookup stays on this page. Keap access is handled securely on the server.</p>
           <form className="lookup-form" onSubmit={handleSubmit} noValidate>
             <label htmlFor="email">Email address</label>
             <input

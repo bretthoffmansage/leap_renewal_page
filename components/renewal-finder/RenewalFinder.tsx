@@ -218,6 +218,9 @@ export function RenewalFinder() {
             <button className="button button--secondary" type="button" onClick={() => reset(false)}>
               No, Start Over
             </button>
+            <button className="button button--secondary" type="button" onClick={() => reset(false)}>
+              Reset
+            </button>
           </div>
         </div>
       ) : null}

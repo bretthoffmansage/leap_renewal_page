@@ -43,7 +43,8 @@ describe("API route contracts", () => {
       const url = input.toString();
 
       if (url.includes("/contacts?") && url.includes("filter=email%3D%3Dperson%40example.com")) {
-        return jsonResponse({ contacts: [{ id: 123, email_addresses: [{ email: "person@example.com" }] }] });
+        // Keap REST v2 returns string ids; production was 502ing when only numbers were accepted.
+        return jsonResponse({ contacts: [{ id: "123", email_addresses: [{ email: "person@example.com" }] }] });
       }
 
       if (url.endsWith("/contacts/123?optional_properties=email_addresses%2Cphone_numbers%2Caddresses%2Ccustom_fields%2Cjob_title%2Csocial_accounts%2Ccompany%2Ccontact_type%2Csource_type%2Cowner_id%2Cleadsource_id%2Ccreate_time%2Cupdate_time%2Cnotes%2Cwebsite%2Cutm_parameters%2Cbilling_information%2Cfax_numbers%2Cpreferred_name%2Cmiddle_name%2Cprefix%2Csuffix%2Cbirth_date%2Canniversary_date%2Cspouse_name%2Ctime_zone%2Corigin%2Ctag_ids%2Cgroups%2Clinks%2Ccreated_by%2Clast_updated_by%2Caccount_id%2Cassistant_name%2Cassistant_phone%2Cpreferred_locale%2Creferral_code%2Cscore_value")) {

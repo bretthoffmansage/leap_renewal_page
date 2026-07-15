@@ -1,6 +1,7 @@
 import "server-only";
 import type { KeapClientConfig } from "./client";
 import { keapFetchJson } from "./client";
+import { parseKeapId } from "./ids";
 import type { KeapTagSummary } from "./types";
 
 function extractTags(response: unknown): KeapTagSummary[] {
@@ -11,7 +12,7 @@ function extractTags(response: unknown): KeapTagSummary[] {
   return values.flatMap((item) => {
     if (!item || typeof item !== "object") return [];
     const tag = item as Record<string, unknown>;
-    const id = tag.id;
+    const id = parseKeapId(tag.id);
     const name = tag.name;
     if (typeof id !== "number" || typeof name !== "string") return [];
     return [{ id, name, category: tag.category }];

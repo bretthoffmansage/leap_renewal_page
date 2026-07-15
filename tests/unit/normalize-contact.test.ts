@@ -40,4 +40,25 @@ describe("normalizeKeapContact", () => {
     expect(account.derived.tveAttendance).toEqual(["TVE 2024 Attendee"]);
     expect(account.derived.obvioLinks).toEqual([{ label: "Obvio Magic Link", url: "https://obvio.example/link" }]);
   });
+
+  it("normalizes string contact and tag ids from Keap REST v2", () => {
+    const account = normalizeKeapContact({
+      inputEmail: "person@example.com",
+      contact: {
+        id: "123",
+        email_addresses: [{ email: "person@example.com" }],
+        tag_ids: ["3097", "999"],
+        create_time: "2023-06-01T00:00:00Z",
+      },
+      tagCatalog: new Map([
+        [3097, { id: 3097, name: "Status - LEAP - Active Member" }],
+        [999, { id: 999, name: "TVE 2024 Attendee" }],
+      ]),
+    });
+
+    expect(account.contactId).toBe(123);
+    expect(account.derived.leapActive).toBe(true);
+    expect(account.derived.membershipSummary).toBe("Active LEAP");
+    expect(account.derived.tveAttendance).toEqual(["TVE 2024 Attendee"]);
+  });
 });

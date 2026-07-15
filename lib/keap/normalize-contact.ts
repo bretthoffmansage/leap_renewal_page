@@ -1,5 +1,6 @@
 import "server-only";
 import { ACTIVE_LEAP_TAG_ID, findCustomFieldValue } from "./contact-model";
+import { parseKeapId, parseKeapIdArray } from "./ids";
 import type { KeapTagSummary, NormalizedCustomField, NormalizedKeapAccount } from "./types";
 
 function asRecord(value: unknown): Record<string, unknown> {
@@ -8,10 +9,6 @@ function asRecord(value: unknown): Record<string, unknown> {
 
 function stringValue(value: unknown): string | undefined {
   return typeof value === "string" && value.trim() ? value.trim() : undefined;
-}
-
-function numberArray(value: unknown): number[] {
-  return Array.isArray(value) ? value.filter((item): item is number => typeof item === "number") : [];
 }
 
 function extractEmails(contact: Record<string, unknown>, inputEmail: string): string[] {
@@ -105,8 +102,8 @@ export function normalizeKeapContact({
   warnings?: string[];
 }): NormalizedKeapAccount {
   const record = asRecord(contact);
-  const contactId = typeof record.id === "number" ? record.id : Number(record.id ?? record.contact_id ?? 0);
-  const tagIds = numberArray(record.tag_ids ?? record.tagIds ?? record.groups);
+  const contactId = parseKeapId(record.id ?? record.contact_id ?? record.contactId) ?? 0;
+  const tagIds = parseKeapIdArray(record.tag_ids ?? record.tagIds ?? record.groups);
   const customFields = mapCustomFields(record, contactModel);
   const appliedTags = tagIds.map((id) => tagCatalog.get(id) ?? { id, name: "Unknown tag" });
   const leapCohort = findCustomFieldValue(customFields, "LEAPCohort");

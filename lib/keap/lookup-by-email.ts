@@ -1,6 +1,7 @@
 import "server-only";
 import type { KeapClientConfig } from "./client";
 import { keapFetchJson, KeapRequestError } from "./client";
+import { parseKeapId } from "./ids";
 
 export type KeapContactCandidate = Record<string, unknown>;
 
@@ -22,8 +23,7 @@ function normalizeEmail(value: string): string {
 }
 
 export function getContactId(contact: KeapContactCandidate): number | undefined {
-  const value = contact.id ?? contact.contact_id ?? contact.contactId;
-  return typeof value === "number" ? value : undefined;
+  return parseKeapId(contact.id ?? contact.contact_id ?? contact.contactId);
 }
 
 export function extractContactEmails(contact: KeapContactCandidate): string[] {
@@ -84,7 +84,10 @@ export async function findKeapContactByEmail({
 }): Promise<ContactSelection> {
   const searchParams = new URLSearchParams();
   searchParams.set("filter", `email==${email}`);
-  searchParams.set("optional_properties", "email_addresses,tag_ids,custom_fields,create_time");
+  // Keap v2 docs use `fields`; some tenants still honor `optional_properties`.
+  const contactFields = "id,email_addresses,tag_ids,custom_fields,create_time,given_name,family_name";
+  searchParams.set("fields", contactFields);
+  searchParams.set("optional_properties", contactFields);
 
   const response = await keapFetchJson<unknown>({ path: "contacts", searchParams, config, fetchImpl });
   const selection = selectExactEmailContact(response, email);

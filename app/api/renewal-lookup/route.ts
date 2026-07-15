@@ -53,11 +53,12 @@ function mapErrorToStatus(error: KeapRequestError): number {
   return 502;
 }
 
-function logLookupResult(requestId: string, result: string, startedAt: number) {
+function logLookupResult(requestId: string, result: string, startedAt: number, extra?: Record<string, unknown>) {
   console.info("renewal_lookup", {
     requestId,
     result,
     durationMs: Date.now() - startedAt,
+    ...extra,
   });
 }
 
@@ -118,11 +119,16 @@ export async function POST(request: NextRequest) {
     );
   } catch (error) {
     if (error instanceof KeapRequestError) {
-      logLookupResult(requestId, error.code, startedAt);
+      logLookupResult(requestId, error.code, startedAt, {
+        keapStatus: error.status,
+        message: error.message,
+      });
       return errorResponse(error.code, mapErrorToStatus(error), requestId);
     }
 
-    logLookupResult(requestId, "internal_error", startedAt);
+    logLookupResult(requestId, "internal_error", startedAt, {
+      message: error instanceof Error ? error.message : "unknown_error",
+    });
     return errorResponse("INTERNAL_ERROR", 500, requestId);
   }
 }
